@@ -1,0 +1,22 @@
+.nums, .operators {
+    height: 50px;
+    width: 50px;
+    background-color: darkcyan;
+    font-weight: bold;
+}
+
+#equal {
+    height: 50px;
+    width: 150px;
+}
+
+#display {
+    height: 50px;
+    width: 192px;
+    font-size: large;
+}
+
+#container {
+    margin-left: 45%;
+    margin-top: 10%;
+}
