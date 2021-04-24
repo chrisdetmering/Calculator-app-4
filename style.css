@@ -3,20 +3,37 @@
     width: 50px;
     background-color: darkcyan;
     font-weight: bold;
+    font-size: xx-large;
 }
 
 #equal {
     height: 50px;
-    width: 150px;
+    width: 100px;
 }
 
 #display {
     height: 50px;
     width: 192px;
     font-size: large;
+    text-align: right;
+}
+
+#display2 {
+    height: 15px;
+    width: 192px;
+    font-size: x-small;
+    text-align: right;
 }
 
 #container {
     margin-left: 45%;
     margin-top: 10%;
+}
+
+#clear {
+    height: 50px;
+    width: 200px;
+    background-color: darkcyan;
+    font-weight: bold;
+    font-size: xx-large;
 }
