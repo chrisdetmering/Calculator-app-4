@@ -1,11 +1,10 @@
 const screen = document.getElementById("display");
 const equation = document.getElementById("display2");
+const regex = /[0-9+][.][0-9+]/gm;
 let operate = '';
 let firstNumber = '';
 let secondNumber = '';
-let resolved = 0;
-
-
+let solved = 0;
 
 const numberButtons = document.querySelectorAll(".nums");
 numberButtons.forEach(numberButton => {
@@ -16,19 +15,13 @@ numberButtons.forEach(numberButton => {
 
         if (operate === '') {
             firstNumber += number;
-        }
-        if (operate != '') {
+        } else if (operate != '') {
             if (secondNumber === '') {
                 screen.value = '';
                 screen.value += number;
             }
             secondNumber += number;
         }
-
-
-        console.log('first number', firstNumber);
-        console.log("second number", secondNumber);
-        console.log("operator", operate);
     })
 });
 
@@ -39,19 +32,64 @@ operators.forEach(operator => {
 
         if (firstNumber != '' && operate === '') {
             operate = selectedOperator;
-            screen.value += ' ' + operate;
             equation.value += ' ' + operate + ' ';
-            console.log(operate);
-        };
-
+        } else if (firstNumber && operate) {
+        }
         if (secondNumber != '') {
-
         }
     })
 });
 
+
+
+
+const equals = document.querySelector("#equal");
+equals.addEventListener("click", compute);
+
+function compute() {
+    solved += 1;
+
+    if (secondNumber === '') {
+    };
+    let a = '';
+    let b = '';
+
+    if (regex.test(firstNumber) === true) {
+        a = parseFloat(firstNumber);
+    } else {
+        a = parseInt(firstNumber);
+    }
+
+    if (regex.test(secondNumber) === true) {
+        b = parseFloat(secondNumber);
+    } else {
+        b = parseInt(secondNumber);
+    }
+
+
+    if (operate === "+") {
+        let solve = a + b;
+        screen.value = solve;
+        equation.value += " = " + solve;
+    } else if (operate === "-") {
+        let solve = a - b;
+        screen.value = solve;
+        equation.value += " = " + solve;
+    } else if (operate === "x") {
+        let solve = a * b;
+        screen.value = solve;
+        equation.value += " = " + solve;
+    } else if (operate === "÷") {
+        let solve = a / b;
+        screen.value = solve;
+        equation.value += " = " + solve;
+    };
+};
+
 const clear = document.querySelector("#clear");
-clear.addEventListener("click", () => {
+clear.addEventListener("click", remove);
+
+function remove() {
     if (secondNumber === '') {
         firstNumber = '';
         operate = '';
@@ -64,52 +102,13 @@ clear.addEventListener("click", () => {
         secondNumber = '';
         equation.value = firstNumber + ' ' + operate + ' ';
     }
-});
 
-
-const equals = document.querySelector("#equal");
-equals.addEventListener("click", () => {
-    if (secondNumber === '') {
-        return
-    };
-    const regex = /[0-9+][.][0-9+]/gm;
-    let a = '';
-    let b = '';
-
-    if (regex.test(firstNumber) === true) {
-        a = parseFloat(firstNumber);
-    } else {
-        a = parseInt(firstNumber);
+    if (solved > 0) {
+        firstNumber = '';
+        operate = '';
+        screen.value = '';
+        equation.value = '';
+        solved = 0;
     }
 
-
-    if (regex.test(firstNumber) === true) {
-        b = parseFloat(secondNumber);
-    } else {
-        b = parseInt(secondNumber);
-    }
-
-
-    if (operate === "+") {
-        let solve = a + b;
-        screen.value = solve;
-        equation.value += " = " + solve;
-        console.log(solve);
-    } else if (operate === "-") {
-        let solve = a - b;
-        screen.value = solve;
-        equation.value += " = " + solve;
-        console.log(solve);
-    } else if (operate === "x") {
-        let solve = a * b;
-        screen.value = solve;
-        equation.value += " = " + solve;
-        console.log(solve);
-    } else if (operate === "÷") {
-        let solve = a / b;
-        screen.value = solve;
-        equation.value += " = " + solve;
-        console.log(solve);
-    };
-
-});
+};
