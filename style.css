@@ -1,14 +1,21 @@
-.nums, .operators {
-    height: 75px;
-    width: 75px;
-    background-color: lightsalmon;
-    font-weight: bold;
-    font-size: xx-large;
-    border: 2px solid black;
+@font-face {
+    font-family: 'Digital-7';
+    src: url(digital-7.ttf) format('truetype');
 }
 
+.nums, .operators, .equal, .point {
+    height: 75px;
+    width: 75px;
+    background-color: lightslategrey;
+    font-weight: bold;
+    font-size: x-large;
+    border: 2px solid black;
+    color: white;
+}
+
+
 body {
-    background-color: darkgrey;
+    background-color: lightskyblue;
 }
 
 
@@ -19,12 +26,13 @@ body {
     text-align: right;
     background-color: white;
     border: 2px solid black;
+    font-family: 'Digital-7';
 }
 
 #display2 {
     height: 40px;
     width: 292px;
-    font-size: large;
+    font-size: small;
     text-align: right;
     background-color: white;
     border: 2px solid black;
@@ -38,8 +46,9 @@ body {
 #clear {
     height: 75px;
     width: 300px;
-    background-color: lightsalmon;
+    background-color: lightslategrey;
     font-weight: bold;
     font-size: xx-large;
     border: 2px solid black;
+    color: white;
 }
