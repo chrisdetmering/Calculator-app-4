@@ -13,7 +13,13 @@ numberButtons.forEach(numberButton => {
     function addNumbers(e) {
         const number = e.target.textContent;
 
-        if (solved > 0) {
+        if (solved > 0 && operate === '') {
+            screen.value = number;
+            equation.value = number;
+            firstNumber = number;
+            solved = 0
+            return
+        } else if (solved > 0 && operate != '') {
             screen.value = number;
             equation.value += number;
             secondNumber += number;

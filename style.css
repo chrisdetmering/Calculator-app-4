@@ -7,10 +7,11 @@
     height: 75px;
     width: 75px;
     background-color: lightslategrey;
-    font-weight: bold;
     font-size: x-large;
     border: 2px solid black;
     color: white;
+    font-family:'Times New Roman', Times, serif;
+    
 }
 
 
@@ -33,9 +34,11 @@ body {
     height: 40px;
     width: 292px;
     font-size: small;
-    text-align: right;
+    text-align: left;
     background-color: white;
     border: 2px solid black;
+    font-family: 'Digital-7';
+    
 }
 
 #container {
@@ -51,4 +54,5 @@ body {
     font-size: xx-large;
     border: 2px solid black;
     color: white;
+    font-family:'Times New Roman', Times, serif;
 }
