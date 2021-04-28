@@ -1,157 +1,133 @@
 const screen = document.getElementById("display");
 const equation = document.getElementById("display2");
-let operate = '';
+
+let operation = '';
 let firstNumber = '';
 let secondNumber = '';
-let solved = 0;
-let dots = 0;
+let history = '';
 
-const numberButtons = document.querySelectorAll(".nums");
-numberButtons.forEach(numberButton => {
-    numberButton.addEventListener('click', addNumbers);
+document.querySelectorAll(".nums")
+.forEach(numberButton => numberButton.addEventListener('click', setNumbers));
 
-    function addNumbers(e) {
-        const number = e.target.textContent;
+document.querySelectorAll(".operators")
+.forEach(operator => operator.addEventListener("click", setOperation));
 
-        if (solved > 0 && operate === '') {
-            screen.value = number;
-            equation.value = number;
-            firstNumber = number;
-            solved = 0
-            return
-        } else if (solved > 0 && operate != '') {
-            screen.value = number;
-            equation.value += number;
-            secondNumber += number;
-            solved = 0
-            return
-        }
-        if (solved === 0) {
-            screen.value += number;
-            equation.value += number;
-            if (operate === '') {
-                firstNumber += number;
-            } else if (operate != '') {
-                if (secondNumber === '') {
-                    screen.value = '';
-                    screen.value += number;
-                }
-                secondNumber += number;
-            }
-
-        }
+document.querySelector("#equal")
+.addEventListener("click", () => { 
+    if (secondNumber) {
+        const result = compute();
+        screen.value = result;
+        firstNumber = result; 
+        operation = '';
+        secondNumber = '';
+        setHistory(" = " + result);
     }
+} );
+
+document.querySelector("#clear")
+.addEventListener("click", remove);
+
+document.querySelector("#point")
+.addEventListener("click", (e) => {
+    handleDecimalClick(e);
 });
 
-const operators = document.querySelectorAll(".operators");
-operators.forEach(operator => {
-    operator.addEventListener("click", maths);
-});
 
-function maths(e) {
+function setNumbers(e) {
+    const number = e.target.textContent;
+
+    if (!operation) {
+        firstNumber += number;
+        screen.value = firstNumber;
+        setHistory(number)
+    }
+        
+    if (operation) {
+        secondNumber += number;
+        screen.value = secondNumber;
+        setHistory(number)
+    }
+    
+}
+
+function setOperation(e) {
     dots = 0;
     const selectedOperator = e.target.textContent;
-    if (firstNumber != '' && operate === '') {
-        operate = selectedOperator;
-        equation.value += ' ' + operate + ' ';
-        solved = 0;
-    } else if (firstNumber && operate) {
-    }
-    if (secondNumber != '') {
+    if (firstNumber && !operation) {
+        operation = selectedOperator;
+        setHistory(' ' + operation + ' ');
+        return; 
+    } 
+
+    if (secondNumber) {
         compute();
-        operate = selectedOperator;
-        equation.value += ' ' + operate + ' ';
+        operation = selectedOperator;
+        equation.value += ' ' + operation + ' ';
     }
 
 };
 
-const equals = document.querySelector("#equal");
-equals.addEventListener("click", compute);
-
-function compute() {
-    if (solved > 0) { }
-    else if (solved === 0) {
-        let a = parseFloat(firstNumber);
-        let b = parseFloat(secondNumber);
-        dots = 0;
-
-
-        if (operate === "+") {
-            let solve = a + b;
-            screen.value = solve;
-            equation.value += " = " + solve;
-        } else if (operate === "-") {
-            let solve = a - b;
-            screen.value = solve;
-            equation.value += " = " + solve;
-        } else if (operate === "x") {
-            let solve = a * b;
-            screen.value = solve;
-            equation.value += " = " + solve;
-        } else if (operate === "÷") {
-            let solve = a / b;
-            screen.value = solve;
-            equation.value += " = " + solve;
-        };
-
-        firstNumber = screen.value;
-        operate = '';
-        secondNumber = '';
-        solved += 1;
+function compute() {  
+    if (operation === "+") {
+        return add(firstNumber, secondNumber);
+    } 
+    if (operation === "-") {
+        return subtract(firstNumber, secondNumber);
+    } 
+    if (operation === "x") {
+        return multiply(firstNumber, secondNumber);
+    } 
+    if (operation === "÷") {
+        return divide(firstNumber, secondNumber);
     }
 };
-
-const clear = document.querySelector("#clear");
-clear.addEventListener("click", remove);
 
 function remove() {
-    dots = 0;
-    if (secondNumber === '') {
-        firstNumber = '';
-        operate = '';
-        screen.value = '';
-        equation.value = '';
-    }
-
-    if (secondNumber != '') {
-        screen.value = '';
-        secondNumber = '';
-        equation.value = firstNumber + ' ' + operate + ' ';
-    }
-
-    if (solved > 0) {
-        firstNumber = '';
-        operate = '';
-        screen.value = '';
-        equation.value = '';
-        solved = 0;
-    }
-
+    firstNumber = '';
+    operation = '';
+    screen.value = '';
+    history = ''; 
+    setHistory()
 };
 
-const dot = document.querySelector("#point");
-dot.addEventListener("click", (e) => {
-    const decimal = e.target.textContent;
-    if (dots > 0) {
-    } else if (operate === '' && firstNumber === '') {
-        dots += 1;
-        firstNumber = `0${decimal}`;
-        screen.value = `0${decimal}`;
-        equation.value = `0${decimal}`;
-    } else if (operate === '' && solved === 0) {
-        dots += 1;
-        firstNumber += decimal;
-        screen.value += decimal;
-        equation.value += decimal;
-    } else if (operate != '' && secondNumber === '') {
-        dots += 1;
-        secondNumber = `0${decimal}`;
-        screen.value = `0${decimal}`;
-        equation.value += `0${decimal}`;
-    } else if (operate != '' && secondNumber != '') {
-        dots += 1;
-        secondNumber += decimal;
-        screen.value += decimal;
-        equation.value += decimal;
+function handleDecimalClick() {
+    if (!operation) {
+        if (firstNumber.indexOf('.') === -1) {
+            firstNumber += '.'; 
+            setHistory('.');
+            return; 
+        }
+        
     }
-});
+
+    if (operation) {
+        if (secondNumber.indexOf('.') === -1) {
+            secondNumber += "."; 
+            setHistory('.'); 
+            return; 
+        }
+    }
+}
+
+
+function add(num1, num2) {
+    return `${Number(num1) + Number(num2)}`; 
+}
+
+function subtract(num1, num2) {
+    return `${Number(num1) - Number(num2)}`; 
+}
+
+function multiply(num1, num2) {
+    return `${Number(num1) * Number(num2)}`; 
+}
+
+function divide(num1, num2) {
+    return `${Number(num1) / Number(num2)}`; 
+}
+
+//UTILS 
+function setHistory(result = '') {
+    history += result
+    equation.value = history;
+}
